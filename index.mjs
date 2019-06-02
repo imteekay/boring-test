@@ -1,3 +1,5 @@
+#!/usr/bin/env node
+
 import { readFileSync, writeFile } from "fs";
 import minimist from "minimist";
 import mkdirp from "mkdirp";
