@@ -10,15 +10,18 @@
     "minimist": "^1.2.0"
   },
   "scripts": {
-    "test": "jest"
+    "test": "jest",
+    "watch": "jest --no-cache --watch ./*",
+    "build": "babel src -d lib"
   },
   "devDependencies": {
+    "@babel/cli": "^7.4.4",
     "@babel/core": "^7.4.5",
     "@babel/preset-env": "^7.4.5",
     "babel-jest": "^24.8.0",
     "jest": "^24.8.0"
   },
   "bin": {
-    "boring-test": "./index.mjs"
+    "boring-test": "lib/index.js"
   }
 }

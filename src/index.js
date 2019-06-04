@@ -9,9 +9,9 @@ import {
   getTemplateFile,
   getComponentName,
   componentReplacement
-} from "./src/read.js";
+} from "./read.js";
 
-import { callback, getTestPath } from "./src/write.js";
+import { callback, getTestPath } from "./write.js";
 
 const args = minimist(process.argv.slice(2));
 
