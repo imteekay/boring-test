@@ -10,7 +10,7 @@ const TEST = "test";
 
 const callback = e => {
   if (e) throw e;
-  console.log("Saved! 😎");
+  console.log("Created! 😎");
 };
 
 const getTestFileName = fileName => {
