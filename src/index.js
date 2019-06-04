@@ -3,7 +3,7 @@
 import { readFileSync, writeFile } from "fs";
 import minimist from "minimist";
 import mkdirp from "mkdirp";
-import { dirname } from "path";
+import { dirname, resolve } from "path";
 
 import {
   getTemplateFile,
@@ -21,7 +21,8 @@ const file = args.f;
 const componentName = getComponentName(file);
 const templateFile = getTemplateFile(template);
 
-const content = readFileSync(templateFile, "utf8");
+const templatePath = resolve(__dirname, `../${templateFile}`);
+const content = readFileSync(templatePath, "utf8");
 
 const newTest = componentReplacement(content, componentName);
 const newTestPath = getTestPath(file);
