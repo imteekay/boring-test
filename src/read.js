@@ -5,7 +5,7 @@ const getTemplateFile = template => {
     case "css":
       return "templates/css.js";
     default:
-      return "";
+      return "templates/default.js";
   }
 };
 
