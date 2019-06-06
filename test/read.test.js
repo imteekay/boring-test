@@ -7,7 +7,7 @@ import {
 describe("getTemplateFile", () => {
   describe("with no template file", () => {
     it("returns no template", () => {
-      expect(getTemplateFile()).toEqual("");
+      expect(getTemplateFile()).toEqual("templates/default.js");
     });
   });
 
