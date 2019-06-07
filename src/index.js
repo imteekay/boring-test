@@ -5,8 +5,8 @@ import { generateTest } from "./core";
 
 const args = minimist(process.argv.slice(2));
 
-const template = args.t;
-const file = args.f;
+const template = args.t || args.template;
+const file = args.f || args.file;
 
 file
   ? generateTest(template, file)
