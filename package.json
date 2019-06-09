@@ -12,7 +12,8 @@
   "scripts": {
     "test": "jest",
     "watch": "jest --no-cache --watch ./*",
-    "build": "babel src -d lib"
+    "build": "babel src -d lib",
+    "build-and-run": "babel src -d lib && node lib/index.js src/core.js -t css"
   },
   "devDependencies": {
     "@babel/cli": "^7.4.4",
