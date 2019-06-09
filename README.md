@@ -20,7 +20,15 @@ $ npx boring-test -f the/path/to/the/file.js -t css
 
 ## Usage
 
-The Boring Test CLI supports two arguments
+The Boring Test CLI supports two ways to generate a testing file:
+
+#### With a file and a template argument
+
+```bash
+$ npx boring-test src/file.js -t css
+```
+
+#### With two arguments:
 
 - `f` stands for `file`
 - `t` stands for `template`
@@ -30,6 +38,14 @@ The `file` argument expects the component file to be tested.
 The `template` options are: `css` and `default`. The [`css` template](https://github.com/leandrotk/boring-test/blob/master/templates/css.js) will generate a test for styled components. If you do not pass the template, it will generate an empty test file.
 
 ## Examples
+
+#### When passing the file not as an argument
+
+```bash
+$ npx boring-test src/file.js -t css
+```
+
+It creates the test file in the `src/tests/file.test.js` path with the [`css` template](https://github.com/leandrotk/boring-test/blob/master/templates/css.js).
 
 #### When passing the file and template
 

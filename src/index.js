@@ -6,7 +6,7 @@ import { generateTest } from "./core";
 const args = minimist(process.argv.slice(2));
 
 const template = args.t || args.template;
-const file = args.f || args.file;
+const file = args._[0] || args.f || args.file;
 
 file
   ? generateTest(template, file)
