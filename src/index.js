@@ -1,13 +1,18 @@
 #!/usr/bin/env node
 
 import minimist from "minimist";
-import { generateTest } from "./core";
+import { generateTemplates, generateTest } from "./core";
 
 const args = minimist(process.argv.slice(2));
 
 const template = args.t || args.template;
-const file = args._[0] || args.f || args.file;
+const command = args._[0] || args.f || args.file;
 
-file
-  ? generateTest(template, file)
-  : console.log("Add a file as the -f argument");
+const handleGeneration = () =>
+  command === 'generate' ?
+    generateTemplates() :
+    generateTest(template, command);
+
+command ?
+  handleGeneration() :
+  console.log("Add a file as the -f argument");

@@ -1,4 +1,8 @@
-import { readFileSync, writeFile } from "fs";
+import {
+  readdirSync,
+  readFileSync,
+  writeFile
+} from "fs";
 
 import mkdirp from "mkdirp";
 import { dirname, resolve } from "path";
@@ -9,7 +13,22 @@ import {
   componentReplacement
 } from "./read.js";
 
-import { callback, getTestPath } from "./write.js";
+import { templateCallbak, callback, getTestPath } from "./write.js";
+
+const generateTemplates = () => {
+  const templates = resolve(__dirname, '../templates');
+
+  readdirSync(templates).forEach(file => {
+    const templatePath = resolve(__dirname, `../templates/${file}`);
+    const content = readFileSync(templatePath, "utf8");
+
+    mkdirp(dirname(`templates/${file}`), err => {
+      if (err) return cb(err);
+
+      writeFile(`templates/${file}`, content, templateCallbak(file));
+    });
+  });
+};
 
 const generateTest = (template, file) => {
   const componentName = getComponentName(file);
@@ -28,4 +47,4 @@ const generateTest = (template, file) => {
   });
 };
 
-export { generateTest };
+export { generateTemplates, generateTest };
