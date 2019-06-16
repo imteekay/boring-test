@@ -71,6 +71,16 @@ $ npx boring-test -t css
 
 With no file, it can't generate any test template. so it just sends a message to `Add a file as the -f argument`.
 
+## Generate templates
+
+Generate the templates in your project.
+
+```
+$ npx boring-test generate-templates
+```
+
+Now you have the [default](https://github.com/leandrotk/boring-test/blob/master/templates/default.js) and the [css](https://github.com/leandrotk/boring-test/blob/master/templates/css.js) templates in a `templates` folder inside your project.
+
 ## Demo
 
 ![Boring Test Demo](https://github.com/leandrotk/boring-test/blob/master/assets/boring-test-demo.gif)
