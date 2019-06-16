@@ -71,7 +71,7 @@ $ npx boring-test -t css
 
 With no file, it can't generate any test template. so it just sends a message to `Add a file as the -f argument`.
 
-### Generate templates
+## Generate templates
 
 Generate the templates in your project.
 
