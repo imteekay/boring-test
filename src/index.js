@@ -9,7 +9,7 @@ const template = args.t || args.template;
 const command = args._[0] || args.f || args.file;
 
 const handleGeneration = () =>
-  command === 'generate' ?
+  command === 'generate-templates' ?
     generateTemplates() :
     generateTest(template, command);
 
