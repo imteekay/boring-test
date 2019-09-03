@@ -35,7 +35,7 @@ $ npx boring-test src/file.js -t css
 
 The `file` argument expects the component file to be tested.
 
-The `template` options are: `css` and `default`. The [`css` template](https://github.com/leandrotk/boring-test/blob/master/templates/css.js) will generate a test for styled components. If you do not pass the template, it will generate an empty test file.
+The `template` options are: `css`, `ui`, and `default`. The [`css` template](https://github.com/leandrotk/boring-test/blob/master/templates/css.js) will generate a test for styled components. The [`ui` template] will generate a test for the component using [Enzyme](https://www.npmjs.com/package/enzyme). If you do not pass the template, it will generate an empty test file.
 
 ## Examples
 
@@ -49,7 +49,7 @@ It creates the test file in the `src/tests/file.test.js` path with the [`css` te
 
 #### When passing the file and template
 
-```
+```bash
 $ npx boring-test -f src/file.js -t css
 ```
 
@@ -57,7 +57,7 @@ It creates the test file in the `src/tests/file.test.js` path with the [`css` te
 
 #### When passing the file only
 
-```
+```bash
 $ npx boring-test -f src/file.js
 ```
 
@@ -65,7 +65,7 @@ With no template, it generates the default test file. Today it create just an em
 
 #### When not passing the file
 
-```
+```bash
 $ npx boring-test -t css
 ```
 
@@ -75,7 +75,7 @@ With no file, it can't generate any test template. so it just sends a message to
 
 Generate the templates in your project.
 
-```
+```bash
 $ npx boring-test generate-templates
 ```
 
