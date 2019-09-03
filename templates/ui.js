@@ -1,37 +1,38 @@
-import React from "react";
-import { shallow } from "enzyme";
+import React from 'react';
+import { shallow } from 'enzyme';
 
-import ${componentToBeTested} from "../${componentToBeTested}";
+import ${componentToBeTested} from '../${componentToBeTested}';
 
-describe("${componentToBeTested}", () => {
+describe('${componentToBeTested}', () => {
   let renderedComponent;
-  const children = <div>I am a child!</div>;
+
   const defaultProps = {
-    children,
-    onClickAppBarIcon: jest.fn(),
-    persistenceFinished: true,
-    route: { editingMode: true }
+    someProp: 'someProp',
   };
 
-  const render = props =>
-    shallow(<${componentToBeTested} {...defaultProps} {...props} />);
+  const render = (props) => shallow(<${componentToBeTested} {...defaultProps} {...props} />);
 
-  beforeEach(() => {
-    jest.clearAllMocks();
+  beforeAll(() => {
     renderedComponent = render();
   });
 
-  describe("UI", () => {
-    describe("renders <AnotherComponent /> with correct props", () => {
+  describe('UI', () => {
+    describe('renders <AnotherComponent /> with correct props', () => {
+      let anotherComponent;
       let componentProps;
 
-      beforeEach(() => {
-        componentProps = renderedComponent.find(AnotherComponent).props();
+      beforeAll(() => {
+        anotherComponent = renderedComponent.find(AnotherComponent);
+        componentProps = anotherComponent.props();
       });
 
-      it("has the main props", () => {
+      it('finds the other component inside the main component', () => {
+        expect(anotherComponent).toHaveLength(1);
+      });
+
+      it('has the main props', () => {
         expect(componentProps).toMatchObject({
-          onClickIcon: defaultProps.onClickAppBarIcon
+          someProp: defaultProps.someProp,
         });
       });
     });

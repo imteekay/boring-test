@@ -4,6 +4,8 @@ const getTemplateFile = template => {
   switch (template) {
     case "css":
       return "templates/css.js";
+    case "ui":
+      return "templates/ui.js";
     default:
       return "templates/default.js";
   }
