@@ -6,14 +6,15 @@
   "repository": "git@github.com:leandrotk/boring-test.git",
   "author": "TK <leandrotk100@gmail.com>",
   "license": "MIT",
-  "dependencies": {
-    "minimist": "^1.2.0"
-  },
   "scripts": {
     "test": "jest",
     "watch": "jest --no-cache --watch ./*",
     "build": "babel src -d lib",
     "build-and-run": "babel src -d lib && node lib/index.js src/core.js -t css"
+  },
+  "dependencies": {
+    "minimist": "^1.2.0",
+    "mkdirp": "^0.5.1"
   },
   "devDependencies": {
     "@babel/cli": "^7.4.4",
