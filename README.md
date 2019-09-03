@@ -35,7 +35,7 @@ $ npx boring-test src/file.js -t css
 
 The `file` argument expects the component file to be tested.
 
-The `template` options are: `css`, `ui`, and `default`. The [`css` template](https://github.com/leandrotk/boring-test/blob/master/templates/css.js) will generate a test for styled components. The [`ui` template] will generate a test for the component using [Enzyme](https://www.npmjs.com/package/enzyme). If you do not pass the template, it will generate an empty test file.
+The `template` options are: `css`, `ui`, and `default`. The [`css` template](https://github.com/leandrotk/boring-test/blob/master/templates/css.js) will generate a test for styled components. The [`ui` template](https://github.com/leandrotk/boring-test/blob/master/templates/ui.js) will generate a test for the component using [Enzyme](https://www.npmjs.com/package/enzyme). If you do not pass the template, it will generate an empty test file.
 
 ## Examples
 
