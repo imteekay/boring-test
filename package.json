@@ -10,7 +10,8 @@
     "test": "jest",
     "watch": "jest --no-cache --watch ./*",
     "build": "babel src -d lib",
-    "build-and-run": "babel src -d lib && node lib/index.js src/core.js -t css"
+    "build:watch": "babel --watch src -d lib",
+    "build:run": "babel src -d lib && node lib/index.js src/core.js -t css"
   },
   "dependencies": {
     "minimist": "^1.2.0",
