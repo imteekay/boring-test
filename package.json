@@ -11,7 +11,8 @@
     "watch": "jest --no-cache --watch ./*",
     "build": "babel src -d lib",
     "build:watch": "babel --watch src -d lib",
-    "build:run": "babel src -d lib && node lib/index.js src/core.js -t css"
+    "build:run": "babel src -d lib && node lib/index.js src/core.js -t css",
+    "build:generate": "babel src -d lib && node lib/index.js generate-templates"
   },
   "dependencies": {
     "@babel/runtime": "^7.6.0",

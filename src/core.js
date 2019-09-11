@@ -1,6 +1,5 @@
-import fs from "fs";
-import util from 'util';
 import mkdirp from "mkdirp";
+import { promises as fs } from "fs";
 import { dirname, resolve } from "path";
 
 import {
@@ -9,23 +8,20 @@ import {
   componentReplacement
 } from "./read.js";
 
-import { templateCallbak, callback, getTestPath } from "./write.js";
-
-const readdir = util.promisify(fs.readdir);
-const readFile = util.promisify(fs.readFile);
+import { templateCallback, creationCallback, getTestPath } from "./write.js";
 
 const generateTemplates = async () => {
   const templatesFiles = resolve(__dirname, '../templates');
-  const templates = await readdir(templatesFiles);
+  const templates = await fs.readdir(templatesFiles);
 
   templates.forEach(async (file) => {
     const templatePath = resolve(__dirname, `../templates/${file}`);
-    const content = await readFile(templatePath, "utf8");
+    const content = await fs.readFile(templatePath, "utf8");
 
-    mkdirp(dirname(`templates/${file}`), err => {
+    mkdirp(dirname(`templates/${file}`), async err => {
       if (err) return cb(err);
 
-      fs.writeFile(`templates/${file}`, content, templateCallbak(file));
+      templateCallback(file)(await fs.writeFile(`templates/${file}`, content));
     });
   });
 };
@@ -35,15 +31,15 @@ const generateTest = async (template, file) => {
   const templateFile = getTemplateFile(template);
 
   const templatePath = resolve(__dirname, `../${templateFile}`);
-  const content = await readFile(templatePath, "utf8");
+  const content = await fs.readFile(templatePath, "utf8");
 
   const newTest = componentReplacement(content, componentName);
   const newTestPath = getTestPath(file);
 
-  mkdirp(dirname(newTestPath), err => {
+  mkdirp(dirname(newTestPath), async err => {
     if (err) return cb(err);
 
-    fs.writeFile(newTestPath, newTest, callback);
+    creationCallback(await fs.writeFile(newTestPath, newTest));
   });
 };
 
