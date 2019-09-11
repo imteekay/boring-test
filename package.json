@@ -14,12 +14,14 @@
     "build:run": "babel src -d lib && node lib/index.js src/core.js -t css"
   },
   "dependencies": {
+    "@babel/runtime": "^7.6.0",
     "minimist": "^1.2.0",
     "mkdirp": "^0.5.1"
   },
   "devDependencies": {
     "@babel/cli": "^7.4.4",
     "@babel/core": "^7.4.5",
+    "@babel/plugin-transform-runtime": "^7.6.0",
     "@babel/preset-env": "^7.4.5",
     "babel-jest": "^24.8.0",
     "jest": "^24.8.0"
