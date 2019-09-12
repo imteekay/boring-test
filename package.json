@@ -1,6 +1,6 @@
 {
   "name": "boring-test",
-  "version": "1.5.1",
+  "version": "1.6.1",
   "description": "Automate boring tests",
   "main": "index.js",
   "repository": "git@github.com:leandrotk/boring-test.git",
@@ -11,15 +11,18 @@
     "watch": "jest --no-cache --watch ./*",
     "build": "babel src -d lib",
     "build:watch": "babel --watch src -d lib",
-    "build:run": "babel src -d lib && node lib/index.js src/core.js -t css"
+    "build:run": "babel src -d lib && node lib/index.js src/core.js -t css",
+    "build:generate": "babel src -d lib && node lib/index.js generate-templates"
   },
   "dependencies": {
+    "@babel/runtime": "^7.6.0",
     "minimist": "^1.2.0",
     "mkdirp": "^0.5.1"
   },
   "devDependencies": {
     "@babel/cli": "^7.4.4",
     "@babel/core": "^7.4.5",
+    "@babel/plugin-transform-runtime": "^7.6.0",
     "@babel/preset-env": "^7.4.5",
     "babel-jest": "^24.8.0",
     "jest": "^24.8.0"

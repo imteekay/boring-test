@@ -1,10 +1,5 @@
-import {
-  readdirSync,
-  readFileSync,
-  writeFile
-} from "fs";
-
 import mkdirp from "mkdirp";
+import { promises as fs } from "fs";
 import { dirname, resolve } from "path";
 
 import {
@@ -13,38 +8,45 @@ import {
   componentReplacement
 } from "./read.js";
 
-import { templateCallbak, callback, getTestPath } from "./write.js";
+import { templateCreationCallback, testCreationCallback, getTestPath } from "./write.js";
 
-const generateTemplates = () => {
-  const templates = resolve(__dirname, '../templates');
+const generateTemplates = async () => {
+  const templatesFiles = resolve(__dirname, '../templates');
+  const templates = await fs.readdir(templatesFiles);
 
-  readdirSync(templates).forEach(file => {
+  templates.forEach(async (file) => {
     const templatePath = resolve(__dirname, `../templates/${file}`);
-    const content = readFileSync(templatePath, "utf8");
+    const content = await fs.readFile(templatePath, "utf8");
 
-    mkdirp(dirname(`templates/${file}`), err => {
-      if (err) return cb(err);
+    const error = await fs.mkdir(dirname(`templates/${file}`));
 
-      writeFile(`templates/${file}`, content, templateCallbak(file));
-    });
+    if (error) {
+      console.log(`Error on template file creation: ${error}`);
+      return;
+    }
+
+    templateCreationCallback(file)(await fs.writeFile(`templates/${file}`, content));
   });
 };
 
-const generateTest = (template, file) => {
+const generateTest = async (template, file) => {
   const componentName = getComponentName(file);
   const templateFile = getTemplateFile(template);
 
   const templatePath = resolve(__dirname, `../${templateFile}`);
-  const content = readFileSync(templatePath, "utf8");
+  const content = await fs.readFile(templatePath, "utf8");
 
   const newTest = componentReplacement(content, componentName);
   const newTestPath = getTestPath(file);
 
-  mkdirp(dirname(newTestPath), err => {
-    if (err) return cb(err);
+  const error = await fs.mkdir(dirname(newTestPath));
 
-    writeFile(newTestPath, newTest, callback);
-  });
+  if (error) {
+    console.log(`Error on test file creation: ${error}`);
+    return;
+  }
+
+  testCreationCallback(await fs.writeFile(newTestPath, newTest));
 };
 
 export { generateTemplates, generateTest };
