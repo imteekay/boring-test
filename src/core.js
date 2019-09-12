@@ -8,7 +8,7 @@ import {
   componentReplacement
 } from "./read.js";
 
-import { templateCallback, creationCallback, getTestPath } from "./write.js";
+import { templateCreationCallback, testCreationCallback, getTestPath } from "./write.js";
 
 const generateTemplates = async () => {
   const templatesFiles = resolve(__dirname, '../templates');
@@ -21,7 +21,7 @@ const generateTemplates = async () => {
     mkdirp(dirname(`templates/${file}`), async err => {
       if (err) return cb(err);
 
-      templateCallback(file)(await fs.writeFile(`templates/${file}`, content));
+      templateCreationCallback(file)(await fs.writeFile(`templates/${file}`, content));
     });
   });
 };
@@ -39,7 +39,7 @@ const generateTest = async (template, file) => {
   mkdirp(dirname(newTestPath), async err => {
     if (err) return cb(err);
 
-    creationCallback(await fs.writeFile(newTestPath, newTest));
+    testCreationCallback(await fs.writeFile(newTestPath, newTest));
   });
 };
 

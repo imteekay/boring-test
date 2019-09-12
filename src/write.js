@@ -8,12 +8,12 @@ import {
 const TESTS = "tests";
 const TEST = "test";
 
-const templateCallback = file => e => {
+const templateCreationCallback = file => e => {
   if (e) throw e;
   console.log(`Created ${file} template! 😎`);
 };
 
-const creationCallback = e => {
+const testCreationCallback = e => {
   if (e) throw e;
   console.log("Created! 😎");
 };
@@ -35,4 +35,4 @@ const getTestPath = file => {
   return [...folders, TESTS, testFileName].join("/");
 };
 
-export { templateCallback, creationCallback, getTestPath };
+export { templateCreationCallback, testCreationCallback, getTestPath };
