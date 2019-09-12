@@ -18,11 +18,14 @@ const generateTemplates = async () => {
     const templatePath = resolve(__dirname, `../templates/${file}`);
     const content = await fs.readFile(templatePath, "utf8");
 
-    mkdirp(dirname(`templates/${file}`), async err => {
-      if (err) return cb(err);
+    const error = await fs.mkdir(dirname(`templates/${file}`));
 
-      templateCreationCallback(file)(await fs.writeFile(`templates/${file}`, content));
-    });
+    if (error) {
+      console.log(`Error on template file creation: ${error}`);
+      return;
+    }
+
+    templateCreationCallback(file)(await fs.writeFile(`templates/${file}`, content));
   });
 };
 
@@ -36,11 +39,14 @@ const generateTest = async (template, file) => {
   const newTest = componentReplacement(content, componentName);
   const newTestPath = getTestPath(file);
 
-  mkdirp(dirname(newTestPath), async err => {
-    if (err) return cb(err);
+  const error = await fs.mkdir(dirname(newTestPath));
 
-    testCreationCallback(await fs.writeFile(newTestPath, newTest));
-  });
+  if (error) {
+    console.log(`Error on test file creation: ${error}`);
+    return;
+  }
+
+  testCreationCallback(await fs.writeFile(newTestPath, newTest));
 };
 
 export { generateTemplates, generateTest };
