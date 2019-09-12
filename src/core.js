@@ -1,4 +1,3 @@
-import mkdirp from "mkdirp";
 import { promises as fs } from "fs";
 import { dirname, resolve } from "path";
 
@@ -18,9 +17,9 @@ const generateTemplates = async () => {
     const templatePath = resolve(__dirname, `../templates/${file}`);
     const content = await fs.readFile(templatePath, "utf8");
 
-    const error = await fs.mkdir(dirname(`templates/${file}`));
-
-    if (error) {
+    try {
+      await fs.mkdir(dirname(`templates/${file}`), { recursive: true });
+    } catch (error) {
       console.log(`Error on template file creation: ${error}`);
       return;
     }
@@ -39,9 +38,9 @@ const generateTest = async (template, file) => {
   const newTest = componentReplacement(content, componentName);
   const newTestPath = getTestPath(file);
 
-  const error = await fs.mkdir(dirname(newTestPath));
-
-  if (error) {
+  try {
+    await fs.mkdir(dirname(newTestPath), { recursive: true });
+  } catch (error) {
     console.log(`Error on test file creation: ${error}`);
     return;
   }
