@@ -2,16 +2,19 @@ const { dirname, resolve } = require('path')
 const { readFile } = require('fs')
 
 let path;
-let content;
 let clean;
 let propTypes;
 let buildNamedPropTypes;
 
 // Cleaning & Getting props
-clean = (propType) => propType.replace(' = {\n', '').replace('\n', '').trim()
+clean = (propType) =>
+  propType
+    .replace(' = {\n', '')
+    .replace('\n', '')
+    .trim()
 
 buildNamedPropTypes = (propType) => {
-  let [prop, typeShape] = propType.split(/: (.+)/);
+  let [prop, typeShape] = propType.split(': ');
   let [propTypes, type, isRequired] = typeShape.split('.');
   let instanceOf;
 
@@ -25,7 +28,6 @@ buildNamedPropTypes = (propType) => {
   }
 
   if (type.includes('shape')) {
-    console.log(prop, typeShape, type)
     type = 'shape';
   }
 
@@ -43,7 +45,12 @@ buildNamedPropTypes = (propType) => {
 path = resolve(dirname, '/home/leandrokinoshita/projects/photos-pwa/app/containers/PhotoSessions/NotStartedPhotoSessions.js')
 
 readFile(path, 'utf8', (err, data) => {
-  propTypes = data.split('propTypes')[1].split('}')[0].split(',').map(clean).filter(Boolean)
+  propTypes = data
+    .split('propTypes')[1]
+    .split('}')[0]
+    .split(',')
+    .map(clean)
+    .filter(Boolean)
 
   const result = propTypes.map(buildNamedPropTypes)
 
