@@ -17,11 +17,19 @@ clean = (propType) => propType.replace(' = {\n', '').replace('\n', '').trim()
 propTypes = content.split('propTypes')[1].split('}')[0].split(',').map(clean).filter(Boolean)
 
 buildNamedPropTypes = (propType) => {
-  const [prop, typeShape] = propType.split(': ');
-  const type = typeShape.split('.')[1]
+  let [prop, typeShape] = propType.split(': ');
+  let [propTypes, type, isRequired] = typeShape.split('.');
+
+  if (propTypes === 'intlShape') {
+    type = 'intlShape';
+  }
+
+  isRequired = Boolean(isRequired);
+
   return {
     prop,
-    type
+    type,
+    isRequired
   }
 }
 
