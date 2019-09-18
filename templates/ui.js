@@ -1,7 +1,7 @@
 import React from 'react';
 import { shallow } from 'enzyme';
 
-import ${componentToBeTested} from '../${componentToBeTested}';
+import { ${componentToBeTested} } from '../${componentToBeTested}';
 
 describe('${componentToBeTested}', () => {
   let renderedComponent;
