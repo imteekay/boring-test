@@ -82,4 +82,46 @@ readFile(path, 'utf8', (error, data) => {
 
   const namedPropTypes = propTypes.map(buildNamedPropTypes);
   console.log(namedPropTypes);
+  console.log(namedPropTypes.map(a => a.type))
+
+  // Algorithm
+  // para saber quando é para colocar na lista de shapeType, apenas colocar
+  // numa estrutura de dados que o primeiro elemento fala qual a prop que
+  // é preciso colocar os itens
+  // quando tem um `end`, remove essa prop da lista.
+
+  // API
+  // usar push para adicionar
+  // usar pop para remover o ultimo
+  // para pegar o ultimo elemento: array[array.length - 1]
+
+  // Data Structure
+  // [
+  //   {
+  //     prop,
+  //     type,
+  //     isRequired,
+  //     instanceOf
+  //   },
+  //   {
+  //     prop,
+  //     type: 'shape',
+  //     isRequired,
+  //     instanceOf,
+  //     shapeTypes: [
+  //       {
+  //         prop,
+  //         type,
+  //         isRequired,
+  //         instanceOf
+  //       },
+  //       {
+  //         prop,
+  //         type,
+  //         isRequired,
+  //         instanceOf
+  //       },
+  //     ]
+  //   },
+  // ]
 });
