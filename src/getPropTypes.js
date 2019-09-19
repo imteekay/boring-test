@@ -17,9 +17,12 @@ const buildTypes = ({ prop, type, isRequired, instanceOf }) => ({
   instanceOf
 });
 
+const cleanType = (type) =>
+  type.replace(',', '');
+
 const buildNamedPropTypes = (propType) => {
   if (propType.includes('})')) {
-    return;
+    return buildTypes({ type: 'end' });
   }
 
   const [prop, typeShape] = propType.split(': ');
@@ -54,7 +57,7 @@ const buildNamedPropTypes = (propType) => {
 
   return buildTypes({
     prop,
-    type,
+    type: cleanType(type),
     isRequired
   });
 }
@@ -77,6 +80,6 @@ readFile(path, 'utf8', (error, data) => {
     .map(clean)
     .filter(Boolean);
 
-  const result = propTypes.map(buildNamedPropTypes);
-  console.log(result);
+  const namedPropTypes = propTypes.map(buildNamedPropTypes);
+  console.log(namedPropTypes);
 });
