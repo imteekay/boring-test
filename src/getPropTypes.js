@@ -4,17 +4,20 @@ const { readFile } = require('fs')
 // Cleaning & Getting props
 const clean = (propType) =>
   propType
-    .replace(' = {\n', '')
-    .replace('\n', '')
+    .replace(' = {', '')
     .trim();
 
 const getInstanceOf = (type) =>
   type.replace('instanceOf', '').replace(/[^a-zA-Z ]/g, "");
 
 const buildNamedPropTypes = (propType) => {
+  if (propType.includes('})')) {
+    return;
+  }
+
   const [prop, typeShape] = propType.split(': ');
   const [propTypes, type, isRequiredString] = typeShape.split('.');
-  const propTypesList = ['ThemePropType', 'intlShape'];
+  const propTypesList = ['ThemePropType', 'intlShape', 'WidthPropType'];
   const isRequired = Boolean(isRequiredString);
 
   if (propTypesList.includes(propTypes)) {
@@ -62,12 +65,11 @@ readFile(path, 'utf8', (error, data) => {
 
   const propTypes = data
     .split('propTypes')[1]
-    .split('}')[0]
-    .split(',')
+    .split('};')[0]
+    .split('\n')
     .map(clean)
     .filter(Boolean);
 
   const result = propTypes.map(buildNamedPropTypes);
-
   console.log(result);
 });
