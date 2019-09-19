@@ -71,7 +71,7 @@ const buildNamedPropTypes = (propType) => {
 const filePath = '/home/leandrokinoshita/projects/boring-test/mocks/propTypes.js';
 const path = resolve(dirname, filePath);
 
-readFile(path, 'utf8', (error, data) => {
+const generatePropTypes = (error, data) => {
   if (error) {
     const errorMessage = `Error: ${error}`;
     console.log(errorMessage);
@@ -118,4 +118,6 @@ readFile(path, 'utf8', (error, data) => {
   });
 
   console.log('result', JSON.stringify(result, null, 2));
-});
+};
+
+readFile(path, 'utf8', generatePropTypes);
