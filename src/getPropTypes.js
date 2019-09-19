@@ -1,51 +1,58 @@
 const { dirname, resolve } = require('path')
 const { readFile } = require('fs')
 
-let path;
-let clean;
-let propTypes;
-let buildNamedPropTypes;
-
 // Cleaning & Getting props
-clean = (propType) =>
+const clean = (propType) =>
   propType
     .replace(' = {\n', '')
     .replace('\n', '')
-    .trim()
+    .trim();
 
-buildNamedPropTypes = (propType) => {
-  let [prop, typeShape] = propType.split(': ');
-  let [propTypes, type, isRequired] = typeShape.split('.');
-  let instanceOf;
+const getInstanceOf = (type) =>
+  type.replace('instanceOf', '').replace(/[^a-zA-Z ]/g, "");
+
+const buildNamedPropTypes = (propType) => {
+  const [prop, typeShape] = propType.split(': ');
+  const [propTypes, type, isRequiredString] = typeShape.split('.');
+  const isRequired = Boolean(isRequiredString);
 
   if (['ThemePropType', 'intlShape'].includes(propTypes)) {
-    type = propTypes;
+    return {
+      prop,
+      type: propTypes,
+      isRequired
+    }
   }
 
   if (type.includes('instanceOf')) {
-    instanceOf = type.replace('instanceOf', '').replace(/[^a-zA-Z ]/g, "");
-    type = 'instanceOf';
+    return {
+      prop,
+      type: 'instanceOf',
+      isRequired,
+      instanceOf: getInstanceOf(type)
+    }
   }
 
   if (type.includes('shape')) {
-    type = 'shape';
+    return {
+      prop,
+      type: 'shape',
+      isRequired
+    }
   }
-
-  isRequired = Boolean(isRequired);
 
   return {
     prop,
     type,
-    isRequired,
-    instanceOf
+    isRequired
   }
 }
 
 // Reading
-path = resolve(dirname, '/home/leandrokinoshita/projects/photos-pwa/app/containers/PhotoSessions/NotStartedPhotoSessions.js')
+const path = resolve(dirname, '/Users/leandrotk/projects/qa/photos-pwa/app/containers/PhotoSessions/NotStartedPhotoSessions.js')
 
 readFile(path, 'utf8', (err, data) => {
-  propTypes = data
+  const propTypes = data
     .split('propTypes')[1]
     .split('}')[0]
     .split(',')
