@@ -9,7 +9,7 @@ export class TestComponent extends React.PureComponent {
   }
 }
 
-Breadcrumb.propTypes = {
+TestComponent.propTypes = {
   name: PropTypes.string,
   isReal: PropTypes.bool,
   bedrooms: PropTypes.number,

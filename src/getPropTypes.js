@@ -68,7 +68,7 @@ const buildNamedPropTypes = (propType) => {
 }
 
 // Reading
-const filePath = '/home/leandrokinoshita/projects/boring-test/mocks/propTypes.js';
+const filePath = '/home/leandrokinoshita/projects/boring-test/mocks/TestComponent.js';
 const path = resolve(dirname, filePath);
 
 const generatePropTypes = (error, data) => {
@@ -94,7 +94,7 @@ const generatePropTypes = (error, data) => {
     if (propType.type === 'shape') {
       result.push(propType);
       props.push(propType.prop);
-      return; 
+      return;
     }
 
     if (propType.type === 'end') {
@@ -106,7 +106,7 @@ const generatePropTypes = (error, data) => {
       result.push(propType);
       return;
     }
-    
+
     prop = lastItem(props);
 
     result.forEach((resultPropType) => {
