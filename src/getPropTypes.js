@@ -14,14 +14,15 @@ const getInstanceOf = (type) =>
 const buildNamedPropTypes = (propType) => {
   const [prop, typeShape] = propType.split(': ');
   const [propTypes, type, isRequiredString] = typeShape.split('.');
+  const propTypesList = ['ThemePropType', 'intlShape'];
   const isRequired = Boolean(isRequiredString);
 
-  if (['ThemePropType', 'intlShape'].includes(propTypes)) {
+  if (propTypesList.includes(propTypes)) {
     return {
       prop,
       type: propTypes,
       isRequired
-    }
+    };
   }
 
   if (type.includes('instanceOf')) {
@@ -30,7 +31,7 @@ const buildNamedPropTypes = (propType) => {
       type: 'instanceOf',
       isRequired,
       instanceOf: getInstanceOf(type)
-    }
+    };
   }
 
   if (type.includes('shape')) {
@@ -38,28 +39,35 @@ const buildNamedPropTypes = (propType) => {
       prop,
       type: 'shape',
       isRequired
-    }
+    };
   }
 
   return {
     prop,
     type,
     isRequired
-  }
+  };
 }
 
 // Reading
-const path = resolve(dirname, '/Users/leandrotk/projects/qa/photos-pwa/app/containers/PhotoSessions/NotStartedPhotoSessions.js')
+const filePath = '/Users/leandrotk/projects/boring-test/mocks/propTypes.js';
+const path = resolve(dirname, filePath);
 
-readFile(path, 'utf8', (err, data) => {
+readFile(path, 'utf8', (error, data) => {
+  if (error) {
+    const errorMessage = `Error: ${error}`;
+    console.log(errorMessage);
+    return errorMessage;
+  }
+
   const propTypes = data
     .split('propTypes')[1]
     .split('}')[0]
     .split(',')
     .map(clean)
-    .filter(Boolean)
+    .filter(Boolean);
 
-  const result = propTypes.map(buildNamedPropTypes)
+  const result = propTypes.map(buildNamedPropTypes);
 
-  console.log(result)
-})
+  console.log(result);
+});
