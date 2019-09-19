@@ -1,6 +1,9 @@
 const { dirname, resolve } = require('path')
 const { readFile } = require('fs')
 
+const isEmpty = (list) => list && list.length === 0;
+const lastItem = (list) => list && list[list.length - 1];
+
 // Cleaning & Getting props
 const clean = (propType) =>
   propType
@@ -10,11 +13,12 @@ const clean = (propType) =>
 const getInstanceOf = (type) =>
   type.replace('instanceOf', '').replace(/[^a-zA-Z ]/g, "");
 
-const buildTypes = ({ prop, type, isRequired, instanceOf }) => ({
+const buildTypes = ({ prop, type, isRequired, instanceOf, shapeTypes }) => ({
   prop,
   type,
   isRequired,
-  instanceOf
+  instanceOf,
+  shapeTypes
 });
 
 const cleanType = (type) =>
@@ -51,7 +55,8 @@ const buildNamedPropTypes = (propType) => {
     return buildTypes({
       prop,
       type: 'shape',
-      isRequired
+      isRequired,
+      shapeTypes: []
     });
   }
 
@@ -63,7 +68,7 @@ const buildNamedPropTypes = (propType) => {
 }
 
 // Reading
-const filePath = '/Users/leandrotk/projects/boring-test/mocks/propTypes.js';
+const filePath = '/home/leandrokinoshita/projects/boring-test/mocks/propTypes.js';
 const path = resolve(dirname, filePath);
 
 readFile(path, 'utf8', (error, data) => {
@@ -81,47 +86,36 @@ readFile(path, 'utf8', (error, data) => {
     .filter(Boolean);
 
   const namedPropTypes = propTypes.map(buildNamedPropTypes);
-  console.log(namedPropTypes);
-  console.log(namedPropTypes.map(a => a.type))
+  const props = [];
+  const result = [];
+  let prop;
 
-  // Algorithm
-  // para saber quando é para colocar na lista de shapeType, apenas colocar
-  // numa estrutura de dados que o primeiro elemento fala qual a prop que
-  // é preciso colocar os itens
-  // quando tem um `end`, remove essa prop da lista.
+  namedPropTypes.forEach((propType) => {
+    if (propType.type === 'shape') {
+      result.push(propType);
+      props.push(propType.prop);
+      return; 
+    }
 
-  // API
-  // usar push para adicionar
-  // usar pop para remover o ultimo
-  // para pegar o ultimo elemento: array[array.length - 1]
+    if (propType.type === 'end') {
+      props.pop();
+      return;
+    }
 
-  // Data Structure
-  // [
-  //   {
-  //     prop,
-  //     type,
-  //     isRequired,
-  //     instanceOf
-  //   },
-  //   {
-  //     prop,
-  //     type: 'shape',
-  //     isRequired,
-  //     instanceOf,
-  //     shapeTypes: [
-  //       {
-  //         prop,
-  //         type,
-  //         isRequired,
-  //         instanceOf
-  //       },
-  //       {
-  //         prop,
-  //         type,
-  //         isRequired,
-  //         instanceOf
-  //       },
-  //     ]
-  //   },
-  // ]
+    if (isEmpty(props)) {
+      result.push(propType);
+      return;
+    }
+    
+    prop = lastItem(props);
+
+    result.forEach((resultPropType) => {
+      if (resultPropType.type === 'shape' && resultPropType.prop === prop) {
+        resultPropType.shapeTypes.push(propType);
+        return;
+      }
+    });
+  });
+
+  console.log('result', JSON.stringify(result, null, 2));
 });
