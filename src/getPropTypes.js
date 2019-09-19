@@ -10,6 +10,13 @@ const clean = (propType) =>
 const getInstanceOf = (type) =>
   type.replace('instanceOf', '').replace(/[^a-zA-Z ]/g, "");
 
+const buildTypes = ({ prop, type, isRequired, instanceOf }) => ({
+  prop,
+  type,
+  isRequired,
+  instanceOf
+});
+
 const buildNamedPropTypes = (propType) => {
   if (propType.includes('})')) {
     return;
@@ -21,35 +28,35 @@ const buildNamedPropTypes = (propType) => {
   const isRequired = Boolean(isRequiredString);
 
   if (propTypesList.includes(propTypes)) {
-    return {
+    return buildTypes({
       prop,
       type: propTypes,
       isRequired
-    };
+    });
   }
 
   if (type.includes('instanceOf')) {
-    return {
+    return buildTypes({
       prop,
       type: 'instanceOf',
       isRequired,
       instanceOf: getInstanceOf(type)
-    };
+    });
   }
 
   if (type.includes('shape')) {
-    return {
+    return buildTypes({
       prop,
       type: 'shape',
       isRequired
-    };
+    });
   }
 
-  return {
+  return buildTypes({
     prop,
     type,
     isRequired
-  };
+  });
 }
 
 // Reading

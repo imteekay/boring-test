@@ -14,6 +14,7 @@ Breadcrumb.propTypes = {
   isReal: PropTypes.bool,
   bedrooms: PropTypes.number,
   intl: intlShape.isRequired,
+  image: PropTypes.instanceOf(Img),
   width: WidthPropType.all.isRequired,
   breadcrumbInfo: PropTypes.shape({
     city: PropTypes.string,
