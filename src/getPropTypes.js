@@ -1,5 +1,5 @@
-const { dirname, resolve } = require('path')
-const { readFile } = require('fs')
+const { dirname, resolve } = require('path');
+const { readFile } = require('fs');
 
 const isEmpty = (list) => list && list.length === 0;
 const lastItem = (list) => list && list[list.length - 1];

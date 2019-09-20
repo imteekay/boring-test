@@ -4,7 +4,7 @@ import { TestComponent } from './TestComponent';
 
 export class Component extends React.PureComponent {
   render() {
-    const address = { city: 'string'};
+    const address = { city: 'string' };
     const region = { name: 'string' };
     const houseInfo = {
       type: 'string',
@@ -30,6 +30,7 @@ export class Component extends React.PureComponent {
         breadcrumbInfo={breadcrumbInfo}
         houseInfo={houseInfo}
       />
+      <OtherComponent />
     );
   }
 }
