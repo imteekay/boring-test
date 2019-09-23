@@ -119,6 +119,6 @@ const generatePropTypes = (error, data) => {
   console.log('result', JSON.stringify(result, null, 2));
 };
 
-exports.getPropTypes = (filePath) => {
+exports.getComponentPropTypes = (filePath) => {
   readFile(filePath, 'utf8', generatePropTypes);
 };
