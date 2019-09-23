@@ -1,8 +1,8 @@
-const { dirname, resolve } = require('path');
-const { readFile } = require('fs');
+const { promises } = require('fs');
 
+// Helper functions
 const isEmpty = (list) => list && list.length === 0;
-const lastItem = (list) => list && list[list.length - 1];
+const getLastItem = (list) => list && list[list.length - 1];
 
 // Cleaning & Getting props
 const clean = (propType) =>
@@ -11,7 +11,9 @@ const clean = (propType) =>
     .trim();
 
 const getInstanceOf = (type) =>
-  type.replace('instanceOf', '').replace(/[^a-zA-Z ]/g, "");
+  type
+    .replace('instanceOf', '')
+    .replace(/[^a-zA-Z ]/g, "");
 
 const buildTypes = ({ prop, type, isRequired, instanceOf, shapeTypes }) => ({
   prop,
@@ -68,57 +70,61 @@ const buildNamedPropTypes = (propType) => {
 }
 
 // Reading
-// const filePath = '/Users/leandrotk/projects/boring-test/mocks/Component.js';
-
-const generatePropTypes = (error, data) => {
-  if (error) {
-    const errorMessage = `Error: ${error}`;
-    console.log(errorMessage);
-    return errorMessage;
-  }
-
-  const propTypes = data
+const getContentPropTypes = (fileContent) =>
+  fileContent
     .split('propTypes')[1]
     .split('};')[0]
     .split('\n')
     .map(clean)
     .filter(Boolean);
 
+const buildShapeTypes = ({ props, propType }) => (resultPropType) => {
+  const lastProp = getLastItem(props);
+
+  if (resultPropType.type === 'shape' && resultPropType.prop === lastProp) {
+    resultPropType.shapeTypes.push(propType);
+    return;
+  }
+};
+
+const buildPropTypesStructure = ({ generatedPropTypes, props }) => (propType) => {
+  if (propType.type === 'shape') {
+    generatedPropTypes.push(propType);
+    props.push(propType.prop);
+    return;
+  }
+
+  if (propType.type === 'end') {
+    props.pop();
+    return;
+  }
+
+  if (isEmpty(props)) {
+    generatedPropTypes.push(propType);
+    return;
+  }
+
+  generatedPropTypes.forEach(buildShapeTypes({ props, propType }));
+}
+
+const generateComponentPropTypes = (fileContent) => {
+  const propTypes = getContentPropTypes(fileContent);
   const namedPropTypes = propTypes.map(buildNamedPropTypes);
   const props = [];
-  const result = [];
-  let prop;
+  const generatedPropTypes = [];
 
-  namedPropTypes.forEach((propType) => {
-    if (propType.type === 'shape') {
-      result.push(propType);
-      props.push(propType.prop);
-      return;
-    }
+  namedPropTypes.forEach(buildPropTypesStructure({ generatedPropTypes, props }));
 
-    if (propType.type === 'end') {
-      props.pop();
-      return;
-    }
-
-    if (isEmpty(props)) {
-      result.push(propType);
-      return;
-    }
-
-    prop = lastItem(props);
-
-    result.forEach((resultPropType) => {
-      if (resultPropType.type === 'shape' && resultPropType.prop === prop) {
-        resultPropType.shapeTypes.push(propType);
-        return;
-      }
-    });
-  });
-
-  console.log('result', JSON.stringify(result, null, 2));
+  return generatedPropTypes;
 };
 
-exports.getComponentPropTypes = (filePath) => {
-  readFile(filePath, 'utf8', generatePropTypes);
-};
+exports.getComponentPropTypes = async (filePath) => {
+  try {
+    const fileContent = await promises.readFile(filePath, 'utf8');
+    return generateComponentPropTypes(fileContent);
+  } catch (error) {
+    const errorMessage = `Error: ${error}`;
+    console.log(errorMessage);
+    return errorMessage;
+  }
+}

@@ -13,7 +13,10 @@ const getRelativeFolderPath = ({ fileContent, component, componentImport, import
     .substring(componentImport + importString.length, fileContent.indexOf(`${component}';`))
     .replace('.', '');
 
-const getPath = (fileContent) => {
+const getPath = async (filePath) => {
+  const absoluteFilePath = await resolve(dirname, filePath);
+  const fileContent = await promises.readFile(absoluteFilePath, 'utf8');
+
   const component = getComponent(fileContent)
 
   const importString = `import { ${component} } from '`;
@@ -29,10 +32,9 @@ const getPath = (fileContent) => {
   return componentFilePath;
 };
 
-const getComponentFilePath = async (absoluteFilePath) => {
+const getComponentFilePath = async (filePath) => {
   try {
-    const fileContent = await promises.readFile(absoluteFilePath, 'utf8');
-    return getPath(fileContent);
+    return getPath(filePath);
   } catch (error) {
     const errorMessage = `Error: ${error}`;
     console.log(errorMessage);
@@ -42,8 +44,11 @@ const getComponentFilePath = async (absoluteFilePath) => {
 
 exports.getComponentFilePath = getComponentFilePath;
 
-// const filePath = '/Users/leandrotk/projects/boring-test/mocks/Component.js';
-const filePath = '/home/leandrokinoshita/projects/boring-test/mocks/Component.js';
-const absoluteFilePath = resolve(dirname, filePath);
-const result = getComponentFilePath(absoluteFilePath);
-console.log(result);
+const testing = async () => {
+  // const filePath = '/Users/leandrotk/projects/boring-test/mocks/Component.js';
+  const filePath = '/home/leandrokinoshita/projects/boring-test/mocks/Component.js';
+  const result = await getComponentFilePath(filePath);
+  console.log('result', JSON.stringify(result, null, 2));
+}
+
+testing();
