@@ -68,8 +68,7 @@ const buildNamedPropTypes = (propType) => {
 }
 
 // Reading
-const filePath = '/home/leandrokinoshita/projects/boring-test/mocks/TestComponent.js';
-const path = resolve(dirname, filePath);
+// const filePath = '/Users/leandrotk/projects/boring-test/mocks/Component.js';
 
 const generatePropTypes = (error, data) => {
   if (error) {
@@ -120,4 +119,6 @@ const generatePropTypes = (error, data) => {
   console.log('result', JSON.stringify(result, null, 2));
 };
 
-readFile(path, 'utf8', generatePropTypes);
+exports.getPropTypes = (filePath) => {
+  readFile(filePath, 'utf8', generatePropTypes);
+};

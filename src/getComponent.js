@@ -1,10 +1,13 @@
-const { dirname, resolve } = require('path')
+const { dirname, resolve, relative } = require('path')
 const { readFile } = require('fs')
 
-const filePath = '/Users/leandrotk/projects/boring-test/mocks/Component.js';
+const { getPropTypes } = require('./getPropTypes');
+
+// const filePath = '/Users/leandrotk/projects/boring-test/mocks/Component.js';
+const filePath = '/home/leandrokinoshita/projects/boring-test/mocks/Component.js';
 const path = resolve(dirname, filePath);
 
-const getComponentFile = (error, data) => {
+const getComponentFilePath = (error, data) => {
   if (error) {
     const errorMessage = `Error: ${error}`;
     console.log(errorMessage);
@@ -24,7 +27,10 @@ const getComponentFile = (error, data) => {
     data.indexOf(`${component}';`)
   ).replace('.', '');
 
-  console.log(`${relativeFolders}${component}.js`);
+  const innerComponentRelativePath = `${relativeFolders}${component}.js`;
+  const componentPathFolderPath = dirname(filePath);
+
+  getPropTypes(`${componentPathFolderPath}${innerComponentRelativePath}`);
 };
 
-readFile(path, 'utf8', getComponentFile);
+readFile(path, 'utf8', getComponentFilePath);

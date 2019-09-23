@@ -29,8 +29,9 @@ export class Component extends React.PureComponent {
         width='xs'
         breadcrumbInfo={breadcrumbInfo}
         houseInfo={houseInfo}
-      />
-      <OtherComponent />
+      >
+        <OtherComponent />
+      </TestComponent>     
     );
   }
 }
