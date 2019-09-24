@@ -48,7 +48,7 @@ const testing = async () => {
   // const filePath = '/Users/leandrotk/projects/boring-test/mocks/Component.js';
   const filePath = '/home/leandrokinoshita/projects/boring-test/mocks/Component.js';
   const result = await getComponentFilePath(filePath);
-  console.log('result', JSON.stringify(result, null, 2));
+  console.log('Props', JSON.stringify(result, null, 2));
 }
 
 testing();
