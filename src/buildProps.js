@@ -127,20 +127,25 @@ const mapper = {
 }
 
 const buildProps = (props, propTypes = {}, shapeProp, shapeRestListCount) => {
-  console.log('--------------------------------------------')
-  console.log(JSON.stringify(props, null, 2))
   if (props.length === 0) {
     return propTypes;
   }
 
   const prop = props[0];
+  const lastPropIndex = props.length;
+  const rest = props.slice(1, lastPropIndex);
 
   if (prop.type === 'shape') {
-    return buildProps(
+    const shapeProps = buildProps(
       prop.shapeTypes,
       propTypes,
       prop.prop,
       prop.shapeTypes.length
+    );
+
+    return buildProps(
+      rest,
+      shapeProps
     );
   }
 
@@ -163,8 +168,6 @@ const buildProps = (props, propTypes = {}, shapeProp, shapeRestListCount) => {
     );
   }
 
-  const lastPropIndex = props.length;
-  const rest = props.slice(1, lastPropIndex);
   const newPropTypes = {
     ...propTypes,
     [prop.prop]: mapper[prop.type]
@@ -178,4 +181,5 @@ const buildProps = (props, propTypes = {}, shapeProp, shapeRestListCount) => {
 
 const result = buildProps(props);
 
+console.log('\n------------------ RESULT --------------------------\n')
 console.log(result);
