@@ -1,114 +1,4 @@
-const props = [
-  {
-    "prop": "name",
-    "type": "string",
-    "isRequired": false
-  },
-  {
-    "prop": "isReal",
-    "type": "bool",
-    "isRequired": false
-  },
-  {
-    "prop": "bedrooms",
-    "type": "number",
-    "isRequired": false
-  },
-  {
-    "prop": "intl",
-    "type": "intlShape",
-    "isRequired": false
-  },
-  {
-    "prop": "image",
-    "type": "instanceOf",
-    "isRequired": false,
-    "instanceOf": "Img"
-  },
-  {
-    "prop": "width",
-    "type": "WidthPropType",
-    "isRequired": true
-  },
-  {
-    "prop": "breadcrumbInfo",
-    "type": "shape",
-    "isRequired": false,
-    "shapeTypes": [
-      {
-        "prop": "city",
-        "type": "string",
-        "isRequired": false
-      },
-      {
-        "prop": "displayId",
-        "type": "string",
-        "isRequired": false
-      },
-      {
-        "prop": "regionName",
-        "type": "string",
-        "isRequired": false
-      },
-      {
-        "prop": "state",
-        "type": "string",
-        "isRequired": false
-      },
-      {
-        "prop": "street",
-        "type": "string",
-        "isRequired": false
-      }
-    ]
-  },
-  {
-    "prop": "houseInfo",
-    "type": "shape",
-    "isRequired": false,
-    "shapeTypes": [
-      {
-        "prop": "type",
-        "type": "string",
-        "isRequired": false
-      },
-      {
-        "prop": "bedrooms",
-        "type": "number",
-        "isRequired": false
-      },
-      {
-        "prop": "displayId",
-        "type": "string",
-        "isRequired": false
-      }
-    ]
-  },
-  {
-    "prop": "region",
-    "type": "shape",
-    "isRequired": false,
-    "shapeTypes": [
-      {
-        "prop": "name",
-        "type": "string",
-        "isRequired": false
-      }
-    ]
-  },
-  {
-    "prop": "address",
-    "type": "shape",
-    "isRequired": false,
-    "shapeTypes": [
-      {
-        "prop": "city",
-        "type": "string",
-        "isRequired": false
-      }
-    ]
-  }
-]
+const { getComponentFilePath } = require('./getComponentFilePath');
 
 const generateString = () => 'abs';
 const generateBool = () => true;
@@ -179,7 +69,17 @@ const buildProps = (props, propTypes = {}, shapeProp, shapeRestListCount) => {
   );
 }
 
-const result = buildProps(props);
+exports.buildProps = buildProps;
 
-console.log('\n------------------ RESULT --------------------------\n')
-console.log(result);
+const testing = async () => {
+  // const filePath = '/Users/leandrotk/projects/boring-test/mocks/Component.js';
+  const filePath = '/home/leandrokinoshita/projects/boring-test/mocks/Component.js';
+  const result = await getComponentFilePath(filePath);
+
+  const props = buildProps(result);
+
+  console.log('Props\n');
+  console.log(JSON.stringify(props, null, 2));
+}
+
+testing();
