@@ -17,23 +17,21 @@ describe('${componentToBeTested}', () => {
   });
 
   describe('UI', () => {
-    describe('renders <AnotherComponent /> with correct props', () => {
-      let anotherComponent;
+    describe('renders <InnerComponent /> with correct props', () => {
+      let innerComponent;
       let componentProps;
 
       beforeAll(() => {
-        anotherComponent = renderedComponent.find(AnotherComponent);
-        componentProps = anotherComponent.props();
+        innerComponent = renderedComponent.find(InnerComponent);
+        componentProps = innerComponent.props();
       });
 
       it('finds the other component inside the main component', () => {
-        expect(anotherComponent).toHaveLength(1);
+        expect(innerComponent).toHaveLength(1);
       });
 
       it('has the main props', () => {
-        expect(componentProps).toMatchObject({
-          someProp: defaultProps.someProp,
-        });
+        expect(componentProps).toMatchObject(${innerComponentProps});
       });
     });
   });

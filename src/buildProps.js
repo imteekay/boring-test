@@ -1,5 +1,3 @@
-const { getComponentFilePath } = require('./getComponentFilePath');
-
 const generateString = () => 'abs';
 const generateBool = () => true;
 const generateNumber = () => 123;
@@ -70,16 +68,3 @@ const buildProps = (props, propTypes = {}, shapeProp, shapeRestListCount) => {
 }
 
 exports.buildProps = buildProps;
-
-const testing = async () => {
-  // const filePath = '/Users/leandrotk/projects/boring-test/mocks/Component.js';
-  const filePath = '/home/leandrokinoshita/projects/boring-test/mocks/Component.js';
-  const result = await getComponentFilePath(filePath);
-
-  const props = buildProps(result);
-
-  console.log('Props\n');
-  console.log(JSON.stringify(props, null, 2));
-}
-
-testing();

@@ -14,7 +14,7 @@ const getRelativeFolderPath = ({ fileContent, component, componentImport, import
     .replace('.', '');
 
 const getPath = async (filePath) => {
-  const absoluteFilePath = await resolve(dirname, filePath);
+  const absoluteFilePath = await resolve(filePath);
   const fileContent = await promises.readFile(absoluteFilePath, 'utf8');
 
   const component = getComponent(fileContent)

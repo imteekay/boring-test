@@ -3,7 +3,7 @@ import { dirname, resolve } from "path";
 
 import {
   componentReplacement,
-  
+  addInnerComponentProps
 } from './create';
 
 import {
@@ -36,15 +36,19 @@ const generateTemplates = async () => {
   });
 };
 
-const generateTest = async (template, file) => {
-  const componentName = getComponentName(file);
+const generateTest = async (template, filePath) => {
+  const componentName = getComponentName(filePath);
   const templateFile = getTemplateFile(template);
 
   const templatePath = resolve(__dirname, `../${templateFile}`);
   const content = await fs.readFile(templatePath, "utf8");
 
-  const newTest = componentReplacement(content, componentName);
-  const newTestPath = getTestPath(file);
+  const newTest = await addInnerComponentProps(
+    componentReplacement(content, componentName),
+    filePath
+  );
+
+  const newTestPath = getTestPath(filePath);
 
   try {
     await fs.mkdir(dirname(newTestPath), { recursive: true });
