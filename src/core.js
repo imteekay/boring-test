@@ -2,12 +2,20 @@ import { promises as fs } from "fs";
 import { dirname, resolve } from "path";
 
 import {
+  componentReplacement,
+  
+} from './create';
+
+import {
   getTemplateFile,
-  getComponentName,
-  componentReplacement
+  getComponentName
 } from "./read.js";
 
-import { templateCreationCallback, testCreationCallback, getTestPath } from "./write.js";
+import {
+  templateCreationCallback,
+  testCreationCallback,
+  getTestPath
+} from "./write.js";
 
 const generateTemplates = async () => {
   const templatesFiles = resolve(__dirname, '../templates');

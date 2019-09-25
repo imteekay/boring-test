@@ -8,7 +8,7 @@
   "license": "MIT",
   "scripts": {
     "test": "jest",
-    "watch": "jest --no-cache --watch ./*",
+    "test:watch": "jest --no-cache --watch ./*",
     "build": "babel src -d lib",
     "build:watch": "babel --watch src -d lib",
     "build:run": "babel src -d lib && node lib/index.js src/core.js -t css",
