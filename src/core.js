@@ -1,10 +1,7 @@
 import { promises as fs } from "fs";
 import { dirname, resolve } from "path";
 
-import {
-  componentReplacement,
-  addInnerComponentProps
-} from './create';
+import { createNewTest } from './create';
 
 import {
   getTemplateFile,
@@ -43,10 +40,12 @@ const generateTest = async (template, filePath) => {
   const templatePath = resolve(__dirname, `../${templateFile}`);
   const content = await fs.readFile(templatePath, "utf8");
 
-  const newTest = await addInnerComponentProps(
-    componentReplacement(content, componentName),
-    filePath
-  );
+  const newTest = await createNewTest({
+    content,
+    componentName,
+    filePath,
+    template
+  });
 
   const newTestPath = getTestPath(filePath);
 

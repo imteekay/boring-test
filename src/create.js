@@ -12,6 +12,17 @@ const addInnerComponentProps = async (content, filePath) => {
 
   return content
     .replace('${innerComponentProps}', JSON.stringify(innerComponentProps, null, 2));
-}
+};
 
-export { componentReplacement, addInnerComponentProps };
+const isUiTemplate = (template) =>
+  template === 'ui';
+
+const createNewTest = async ({ content, componentName, filePath, template }) => {
+  const replacedComponentTest = componentReplacement(content, componentName);
+
+  return isUiTemplate(template)
+    ? await addInnerComponentProps(replacedComponentTest, filePath)
+    : replacedComponentTest;
+};
+
+export { componentReplacement, addInnerComponentProps, createNewTest };
