@@ -5,7 +5,7 @@ const generateIntlShape = () => 'tricky';
 const generateInstanceOf = () => 'tricky';
 const generateWidthPropType = () => '100';
 
-export const mapper = {
+export const typeToValue = {
   string: generateString(),
   bool: generateBool(),
   number: generateNumber(),

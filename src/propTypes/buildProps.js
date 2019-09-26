@@ -1,4 +1,4 @@
-import { mapper } from './typeValueGenerators';
+import { typeToValue } from './typeValueGenerators';
 
 const buildProps = (props, propTypes = {}, shapeProp, shapeRestListCount) => {
   if (props.length === 0) {
@@ -30,7 +30,7 @@ const buildProps = (props, propTypes = {}, shapeProp, shapeRestListCount) => {
       ...propTypes,
       [shapeProp]: {
         ...propTypes[shapeProp],
-        [prop.prop]: mapper[prop.type]
+        [prop.prop]: typeToValue[prop.type]
       }
     };
 
@@ -44,7 +44,7 @@ const buildProps = (props, propTypes = {}, shapeProp, shapeRestListCount) => {
 
   const newPropTypes = {
     ...propTypes,
-    [prop.prop]: mapper[prop.type]
+    [prop.prop]: typeToValue[prop.type]
   }
 
   return buildProps(

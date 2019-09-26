@@ -1,5 +1,5 @@
-import { buildProps } from './buildProps';
-import { getComponentFilePath } from './getComponentFilePath';
+import { buildProps } from './propTypes/buildProps';
+import { getComponentFilePath } from './propTypes/getComponentFilePath';
 
 const componentReplacement = (content, componentName) =>
   content
