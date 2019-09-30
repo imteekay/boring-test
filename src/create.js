@@ -11,7 +11,10 @@ const addInnerComponentProps = async (content, filePath) => {
   const innerComponentProps = buildProps(innerComponentFilePath);
 
   return content
-    .replace('${innerComponentProps}', JSON.stringify(innerComponentProps, null, 2));
+    .replace(
+      '${innerComponentProps}',
+      JSON.stringify(innerComponentProps, null, 2)
+    );
 };
 
 const isUiTemplate = (template) =>

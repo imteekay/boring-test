@@ -54,3 +54,19 @@ const buildProps = (props, propTypes = {}, shapeProp, shapeRestListCount) => {
 }
 
 exports.buildProps = buildProps;
+
+// TODO: Remove this test
+const { getComponentFilePath } = require('./getComponentFilePath');
+
+const testing = async () => {
+  // const filePath = '/Users/leandrotk/projects/boring-test/mocks/Component.js';
+  const filePath = '/home/leandrokinoshita/projects/boring-test/mocks/Component.js';
+  const result = await getComponentFilePath(filePath);
+
+  const props = buildProps(result);
+
+  console.log('Props\n');
+  console.log(JSON.stringify(props, null, 2));
+}
+
+testing();

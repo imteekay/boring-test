@@ -13,7 +13,7 @@
     "build:watch": "babel --watch src -d lib",
     "build:run": "babel src -d lib && node lib/index.js mocks/Component.js -t ui",
     "build:generate": "babel src -d lib && node lib/index.js generate-templates",
-    "build:prop-types": "babel src -d lib && node lib/buildProps.js"
+    "build:prop-types": "babel src -d lib && node lib/propTypes/buildProps.js"
   },
   "dependencies": {
     "@babel/runtime": "^7.6.0",
