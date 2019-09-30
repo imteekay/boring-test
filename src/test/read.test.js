@@ -1,7 +1,7 @@
 import {
   getTemplateFile,
   getComponentName,
-} from "../src/read";
+} from "../read";
 
 describe("getTemplateFile", () => {
   describe("with no template file", () => {

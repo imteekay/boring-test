@@ -1,6 +1,6 @@
 import {
   componentReplacement
-} from "../src/create";
+} from "../create";
 
 describe("componentReplacement", () => {
   it("returns the component name from the file", () => {
