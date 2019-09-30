@@ -62,7 +62,6 @@ const testing = async () => {
   // const filePath = '/Users/leandrotk/projects/boring-test/mocks/Component.js';
   const filePath = '/home/leandrokinoshita/projects/boring-test/mocks/Component.js';
   const result = await getComponentFilePath(filePath);
-
   const props = buildProps(result);
 
   console.log('Props\n');
