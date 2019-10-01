@@ -1,5 +1,6 @@
-import { buildProps } from './propTypes/buildProps';
 import { getComponentFilePath } from './propTypes/getComponentFilePath';
+import { getComponentPropTypes } from './propTypes/getComponentPropTypes';
+import { buildProps } from './propTypes/buildProps';
 
 const componentReplacement = (content, componentName) =>
   content
@@ -8,7 +9,8 @@ const componentReplacement = (content, componentName) =>
 
 const addInnerComponentProps = async (content, filePath) => {
   const innerComponentFilePath = await getComponentFilePath(filePath);
-  const innerComponentProps = buildProps(innerComponentFilePath);
+  const propsDataStructure = await getComponentPropTypes(innerComponentFilePath);
+  const innerComponentProps = buildProps(propsDataStructure);
 
   return content
     .replace(

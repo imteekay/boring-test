@@ -1,8 +1,6 @@
 const { dirname, resolve } = require('path');
 const { promises } = require('fs');
 
-const { getComponentPropTypes } = require('./getComponentPropTypes');
-
 const getComponent = (fileContent) =>
   fileContent
     .substring(fileContent.indexOf('<') + 1, fileContent.indexOf('/>'))
@@ -27,9 +25,7 @@ const getPath = async (filePath) => {
   const innerComponentRelativePath = `${relativeFolderPath}${component}.js`;
   const componentPathFolderPath = dirname(filePath);
 
-  const componentFilePath = getComponentPropTypes(`${componentPathFolderPath}${innerComponentRelativePath}`);
-
-  return componentFilePath;
+  return `${componentPathFolderPath}${innerComponentRelativePath}`;
 };
 
 const getComponentFilePath = async (filePath) => {
