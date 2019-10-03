@@ -1,6 +1,6 @@
 import { typeToValue } from './typeValueGenerators';
 
-const buildProps = (props, propTypes = {}, shapeProp, shapeRestListCount) => {
+const buildProps = (props, propTypes = {}, shapeProp) => {  
   if (props.length === 0) {
     return propTypes;
   }
@@ -12,33 +12,33 @@ const buildProps = (props, propTypes = {}, shapeProp, shapeRestListCount) => {
   if (prop.type === 'shape') {
     const shapeProps = buildProps(
       prop.shapeTypes,
-      propTypes,
+      propTypes[prop],
       prop.prop,
-      prop.shapeTypes.length
     );
+
+    const newPropTypes = {
+      ...propTypes,
+      [prop.prop]: shapeProps
+    };
 
     return buildProps(
       rest,
-      shapeProps
+      newPropTypes
     );
   }
 
-  if (shapeProp && shapeRestListCount && shapeRestListCount > 0) {
+  if (shapeProp) {
     const lastShapeTypesIndex = props.length;
     const shapeTypesRest = props.slice(1, lastShapeTypesIndex);
     const newPropTypes = {
       ...propTypes,
-      [shapeProp]: {
-        ...propTypes[shapeProp],
-        [prop.prop]: typeToValue[prop.type]
-      }
+      [prop.prop]: typeToValue[prop.type]
     };
 
     return buildProps(
       shapeTypesRest,
       newPropTypes,
       shapeProp,
-      shapeRestListCount - 1
     );
   }
 
@@ -54,24 +54,3 @@ const buildProps = (props, propTypes = {}, shapeProp, shapeRestListCount) => {
 }
 
 exports.buildProps = buildProps;
-
-// TODO: Remove this test
-const { getComponentFilePath } = require('./getComponentFilePath');
-const { getComponentPropTypes } = require('./getComponentPropTypes');
-
-const testing = async () => {
-  // const filePath = '/Users/leandrotk/projects/boring-test/mocks/Component.js';
-  const filePath = '/home/leandrokinoshita/projects/boring-test/mocks/Component.js';
-
-  const innerComponentFilePath = await getComponentFilePath(filePath);
-  const propsDataStructure = await getComponentPropTypes(innerComponentFilePath);
-
-  console.log(JSON.stringify(propsDataStructure, null, 2));
-
-  const innerComponentProps = buildProps(propsDataStructure);
-
-  console.log('Props\n');
-  console.log(JSON.stringify(innerComponentProps, null, 2));
-}
-
-testing();
