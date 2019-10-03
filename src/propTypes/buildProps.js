@@ -57,15 +57,21 @@ exports.buildProps = buildProps;
 
 // TODO: Remove this test
 const { getComponentFilePath } = require('./getComponentFilePath');
+const { getComponentPropTypes } = require('./getComponentPropTypes');
 
 const testing = async () => {
   // const filePath = '/Users/leandrotk/projects/boring-test/mocks/Component.js';
   const filePath = '/home/leandrokinoshita/projects/boring-test/mocks/Component.js';
-  const result = await getComponentFilePath(filePath);
-  const props = buildProps(result);
+
+  const innerComponentFilePath = await getComponentFilePath(filePath);
+  const propsDataStructure = await getComponentPropTypes(innerComponentFilePath);
+
+  console.log(JSON.stringify(propsDataStructure, null, 2));
+
+  const innerComponentProps = buildProps(propsDataStructure);
 
   console.log('Props\n');
-  console.log(JSON.stringify(props, null, 2));
+  console.log(JSON.stringify(innerComponentProps, null, 2));
 }
 
 testing();

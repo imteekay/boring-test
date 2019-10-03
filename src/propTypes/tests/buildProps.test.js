@@ -1,116 +1,41 @@
 import { buildProps } from '../buildProps';
+import { typeToValue } from '../typeValueGenerators';
+import { builtProps } from './mocks/builtProps';
 
-const propTypes = [
-  {
-    prop: 'name',
-    type: 'string',
-    isRequired: false,
-    instanceOf: undefined,
-    shapeTypes: undefined
-  },
-  {
-    prop: 'isReal',
-    type: 'bool',
-    isRequired: false,
-    instanceOf: undefined,
-    shapeTypes: undefined
-  },
-  {
-    prop: 'bedrooms',
-    type: 'number',
-    isRequired: false,
-    instanceOf: undefined,
-    shapeTypes: undefined
-  },
-  {
-    prop: 'intl',
-    type: 'intlShape',
-    isRequired: false,
-    instanceOf: undefined,
-    shapeTypes: undefined
-  },
-  {
-    prop: 'image',
-    type: 'instanceOf',
-    isRequired: false,
-    instanceOf: 'Img',
-    shapeTypes: undefined
-  },
-  {
-    prop: 'width',
-    type: 'WidthPropType',
-    isRequired: true,
-    instanceOf: undefined,
-    shapeTypes: undefined
-  },
-  {
-    prop: 'breadcrumbInfo',
-    type: 'shape',
-    isRequired: false,
-    instanceOf: undefined,
-    shapeTypes: [
-      {
-        prop: 'city',
-        type: 'string',
-        isRequired: false,
-        instanceOf: undefined,
-        shapeTypes: undefined
-      },
-      {
-        prop: 'displayId',
-        type: 'string',
-        isRequired: false,
-        instanceOf: undefined,
-        shapeTypes: undefined
-      },
-      {
-        prop: 'regionName',
-        type: 'string',
-        isRequired: false,
-        instanceOf: undefined,
-        shapeTypes: undefined
-      },
-      {
-        prop: 'state',
-        type: 'string',
-        isRequired: false,
-        instanceOf: undefined,
-        shapeTypes: undefined
-      },
-      {
-        prop: 'street',
-        type: 'string',
-        isRequired: false,
-        instanceOf: undefined,
-        shapeTypes: undefined
-      }
-    ]
-  },
-  {
-    prop: 'houseInfo',
-    type: 'shape',
-    isRequired: false,
-    instanceOf: undefined,
-    shapeTypes: [ [Object], [Object], [Object] ]
-  },
-  {
-    prop: 'region',
-    type: 'shape',
-    isRequired: false,
-    instanceOf: undefined,
-    shapeTypes: [ [Object] ]
-  },
-  {
-    prop: 'address',
-    type: 'shape',
-    isRequired: false,
-    instanceOf: undefined,
-    shapeTypes: [ [Object] ]
-  }
-];
+const string = typeToValue.string;
+const bool = typeToValue.bool;
+const number = typeToValue.number;
+const intlShape = typeToValue.intlShape;
+const instanceOf = typeToValue.instanceOf;
+const WidthPropType = typeToValue.WidthPropType;
 
 describe('buildProps', () => {
   it('returns a props object', () => {
-    expect(buildProps())
+    expect(buildProps(builtProps)).toEqual({
+      name: string,
+      isReal: bool,
+      bedrooms: number,
+      intl: intlShape,
+      image: instanceOf,
+      width: WidthPropType,
+      breadcrumbInfo: {
+        city: string,
+        displayId: string,
+        regionName: string,
+        state: string,
+        street: string,
+      },
+      houseInfo: {
+        type: string,
+        bedrooms: number,
+        region: {
+          name: string,
+        },
+        address: {
+          city: string,
+        },
+        displayId: string,
+      }
+    })
   });
 });
