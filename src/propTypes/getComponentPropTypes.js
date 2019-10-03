@@ -81,15 +81,25 @@ const getContentPropTypes = (fileContent) =>
 const buildShapeTypes = ({ props, propType }) => (resultPropType) => {
   const lastProp = getLastItem(props);
 
-  if (resultPropType.type === 'shape' && resultPropType.prop === lastProp) {
-    resultPropType.shapeTypes.push(propType);
-    return;
+  if (resultPropType.type === 'shape') {
+    if (resultPropType.prop === lastProp) {
+      resultPropType.shapeTypes.push(propType);
+      return;
+    }
+
+    return resultPropType.shapeTypes.forEach(buildShapeTypes({ props, propType }));
   }
 };
 
 const buildPropTypesStructure = ({ generatedPropTypes, props }) => (propType) => {
   if (propType.type === 'shape') {
-    generatedPropTypes.push(propType);
+    if (isEmpty(props)) {
+      generatedPropTypes.push(propType);
+      props.push(propType.prop);
+      return;
+    }
+
+    generatedPropTypes.forEach(buildShapeTypes({ props, propType }));
     props.push(propType.prop);
     return;
   }
