@@ -31,7 +31,7 @@ export class Component extends React.PureComponent {
         houseInfo={houseInfo}
       >
         <OtherComponent />
-      </TestComponent>     
+      </TestComponent>
     );
   }
 }
