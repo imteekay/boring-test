@@ -1,12 +1,15 @@
 import React from 'react';
 import 'jest-styled-components';
-import renderer from 'react-test-renderer';
+import { mount } from 'enzyme';
 
 import ${componentToBeTested} from '../${componentToBeTested}';
 
 describe('${componentToBeTested}', () => {
-  const defaultProps = { propHere: 'propvValue' };
-  const render = (props) => renderer.create(<${componentToBeTested} {...defaultProps} {...props} />).toJSON();
+  const defaultProps = {
+    propHere: 'propvValue'
+  };
+
+  const render = (props) => mount(<${componentToBeTested} {...defaultProps} {...props} />);
 
   describe('when prop has some value', () => {
     it('has the style rule', () => {
