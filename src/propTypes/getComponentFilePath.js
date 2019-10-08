@@ -39,3 +39,46 @@ const getComponentFilePath = async (filePath) => {
 }
 
 exports.getComponentFilePath = getComponentFilePath;
+
+// -----------------------------------------------------------------
+
+const babelParser = require('@babel/parser');
+const fs = require('fs');
+
+const generateAST = (filePath) => {
+  const fileContent = fs.readFileSync(filePath, 'utf8');
+
+  return babelParser.parse(fileContent, {
+    sourceType: 'module',
+    plugins: ['jsx']
+  });
+};
+
+const filePath = '/home/leandrokinoshita/projects/boring-test/mocks/Component.js';
+
+const ast = generateAST(filePath);
+
+console.log(JSON.stringify(ast, null, 2))
+
+const ast = {
+  "key1": {
+    "key2": {
+      "key3": {
+        "value": "my value"
+      }
+    } 
+  }
+}
+
+let deep = (tree) => {
+  if (typeof tree == "string") return;
+
+  const keys = Object.keys(tree);
+
+  keys.forEach((key) => {
+    console.log(tree[key])
+    deep(tree[key]);
+  });
+};
+
+deep(ast)

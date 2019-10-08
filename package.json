@@ -15,6 +15,7 @@
     "build:generate": "babel src -d lib && node lib/index.js generate-templates"
   },
   "dependencies": {
+    "@babel/parser": "^7.6.2",
     "@babel/runtime": "^7.6.0",
     "minimist": "^1.2.0",
     "mkdirp": "^0.5.1"
