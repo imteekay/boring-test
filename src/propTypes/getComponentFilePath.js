@@ -58,27 +58,82 @@ const filePath = '/home/leandrokinoshita/projects/boring-test/mocks/Component.js
 
 const ast = generateAST(filePath);
 
-console.log(JSON.stringify(ast, null, 2))
+// const deep = (tree) => {
+//   if (typeof tree !== 'object' || tree === null) {
+//     return null;
+//   }
 
-const ast = {
-  "key1": {
-    "key2": {
-      "key3": {
-        "value": "my value"
-      }
-    } 
+//   if (Array.isArray(tree)) {
+//     return tree.map(node => deep(node))
+//   }
+
+//   // console.log(tree, typeof tree)
+
+//   if (tree.type === 'JSXElement') {
+//     return tree;
+//   }
+
+//   const keys = Object.keys(tree);
+
+//   return keys.reduce((acc, key) => {
+//     const node = deep(tree[key]);
+
+//     if (node === null) {
+//       return acc;
+//     }
+
+//     return {
+//       ...acc,
+//       [key]: node
+//     };
+//   }, {});
+// };
+
+// console.log(JSON.stringify(ast, null, 2))
+
+const reduceAstNode = (oldNode, currentNode) => {
+  let element = {};
+
+  if (currentNode.type === 'JSXElement') {
+    element = {
+      name: currentNode.openingElement.name.name,
+      children: [],
+    };
+
+    oldNode.push(element);
   }
-}
 
-let deep = (tree) => {
-  if (typeof tree == "string") return;
+  if ('children' in currentNode) {
+    currentNode.children.forEach(
+      (node) =>
+        oldNode.length > 0
+          ? reduceAstNode(element.children, node)
+          : reduceAstNode(oldNode, node),
+    );
+  }
 
-  const keys = Object.keys(tree);
-
-  keys.forEach((key) => {
-    console.log(tree[key])
-    deep(tree[key]);
-  });
+  return oldNode;
 };
 
-deep(ast)
+const getTree = (ast) => {
+  const fn = (type) => (astNode) => astNode.type === type;
+
+  // Let's make it better!
+  const initialAst = ast
+    .program
+    .body
+    .find(fn('ExportNamedDeclaration'))
+    .declaration
+    .body
+    .body[0]
+    .body
+    .body
+    .find(fn('ReturnStatement'))
+    .argument;
+
+  return reduceAstNode([], initialAst);
+};
+
+const node = getTree(ast);
+
+console.log(JSON.stringify(node, null, 2));
