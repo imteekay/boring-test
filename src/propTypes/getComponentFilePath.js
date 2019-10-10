@@ -42,54 +42,22 @@ exports.getComponentFilePath = getComponentFilePath;
 
 // -----------------------------------------------------------------
 
-const babelParser = require('@babel/parser');
+const Parser = require('@babel/parser');
+const Traverser = require('@babel/traverse');
 const fs = require('fs');
 
 const generateAST = (filePath) => {
   const fileContent = fs.readFileSync(filePath, 'utf8');
 
-  return babelParser.parse(fileContent, {
+  return Parser.parse(fileContent, {
     sourceType: 'module',
     plugins: ['jsx']
   });
 };
 
-const filePath = '/home/leandrokinoshita/projects/boring-test/mocks/Component.js';
+const filePath = '/home/leandrokinoshita/projects/boring-test/mocks/Component2.js';
 
 const ast = generateAST(filePath);
-
-// const deep = (tree) => {
-//   if (typeof tree !== 'object' || tree === null) {
-//     return null;
-//   }
-
-//   if (Array.isArray(tree)) {
-//     return tree.map(node => deep(node))
-//   }
-
-//   // console.log(tree, typeof tree)
-
-//   if (tree.type === 'JSXElement') {
-//     return tree;
-//   }
-
-//   const keys = Object.keys(tree);
-
-//   return keys.reduce((acc, key) => {
-//     const node = deep(tree[key]);
-
-//     if (node === null) {
-//       return acc;
-//     }
-
-//     return {
-//       ...acc,
-//       [key]: node
-//     };
-//   }, {});
-// };
-
-// console.log(JSON.stringify(ast, null, 2))
 
 const reduceAstNode = (oldNode, currentNode) => {
   let element = {};
@@ -115,13 +83,10 @@ const reduceAstNode = (oldNode, currentNode) => {
   return oldNode;
 };
 
-const getTree = (ast) => {
-  const fn = (type) => (astNode) => astNode.type === type;
+const fn = (type) => (astNode) => astNode.type === type;
 
-  // Let's make it better!
-  const initialAst = ast
-    .program
-    .body
+const component = (body) =>
+  body
     .find(fn('ExportNamedDeclaration'))
     .declaration
     .body
@@ -131,7 +96,15 @@ const getTree = (ast) => {
     .find(fn('ReturnStatement'))
     .argument;
 
-  return reduceAstNode([], initialAst);
+const getTree = (ast) => {
+  Traverser.default(ast, {
+    JSXOpeningElement: (path) => {
+      const jsx = path.node;
+      const componentName = jsx.name.name;
+      const componentAttributes = jsx.attributes;
+      console.log('componentName', componentName)
+    }
+  });
 };
 
 const node = getTree(ast);
