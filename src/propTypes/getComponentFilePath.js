@@ -55,58 +55,41 @@ const generateAST = (filePath) => {
   });
 };
 
-const filePath = '/home/leandrokinoshita/projects/boring-test/mocks/Component2.js';
+// const filePath = '/home/leandrokinoshita/projects/boring-test/mocks/Component2.js';
+const filePath = '/Users/leandrotk/projects/boring-test/mocks/Component2.js';
 
 const ast = generateAST(filePath);
 
-const reduceAstNode = (oldNode, currentNode) => {
-  let element = {};
+const addComponentName = (componentsNames) => (path) => {
+  const jsx = path.node;
+  const componentName = jsx.name.name;
 
-  if (currentNode.type === 'JSXElement') {
-    element = {
-      name: currentNode.openingElement.name.name,
-      children: [],
-    };
+  componentsNames.push(componentName);
+}
 
-    oldNode.push(element);
-  }
+const addImportPath = (importsPaths) => (path) => {
+  const node = path.node;
+  const componentName = node.specifiers[0].local.name;
+  const componentPath = node.source.value;
 
-  if ('children' in currentNode) {
-    currentNode.children.forEach(
-      (node) =>
-        oldNode.length > 0
-          ? reduceAstNode(element.children, node)
-          : reduceAstNode(oldNode, node),
-    );
-  }
+  importsPaths[componentName] = componentPath;
+}
 
-  return oldNode;
-};
+const getComponentsAndImports = (ast) => {
+  const componentsNames = [];
+  const importsPaths = {};
 
-const fn = (type) => (astNode) => astNode.type === type;
-
-const component = (body) =>
-  body
-    .find(fn('ExportNamedDeclaration'))
-    .declaration
-    .body
-    .body[0]
-    .body
-    .body
-    .find(fn('ReturnStatement'))
-    .argument;
-
-const getTree = (ast) => {
   Traverser.default(ast, {
-    JSXOpeningElement: (path) => {
-      const jsx = path.node;
-      const componentName = jsx.name.name;
-      const componentAttributes = jsx.attributes;
-      console.log('componentName', componentName)
-    }
+    JSXOpeningElement: addComponentName(componentsNames),
+    ImportDeclaration: addImportPath(importsPaths)
   });
+
+  return {
+    componentsNames,
+    importsPaths
+  };
 };
 
-const node = getTree(ast);
+const { componentsNames, importsPaths } = getComponentsAndImports(ast);
 
-console.log(JSON.stringify(node, null, 2));
+componentsNames.forEach((name) => console.log(name, importsPaths[name]));
