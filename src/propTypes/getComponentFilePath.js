@@ -1,64 +1,16 @@
 const { dirname, resolve } = require('path');
 const { promises } = require('fs');
-
-const getComponent = (fileContent) =>
-  fileContent
-    .substring(fileContent.indexOf('<') + 1, fileContent.indexOf('/>'))
-    .split('\n')[0];
-
-const getRelativeFolderPath = ({ fileContent, component, componentImport, importString }) =>
-  fileContent
-    .substring(componentImport + importString.length, fileContent.indexOf(`${component}';`))
-    .replace('.', '');
-
-const getPath = async (filePath) => {
-  const absoluteFilePath = await resolve(filePath);
-  const fileContent = await promises.readFile(absoluteFilePath, 'utf8');
-
-  const component = getComponent(fileContent)
-
-  const importString = `import { ${component} } from '`;
-  const componentImport = fileContent.indexOf(importString);
-
-  const relativeFolderPath = getRelativeFolderPath({ fileContent, component, componentImport, importString });
-
-  const innerComponentRelativePath = `${relativeFolderPath}${component}.js`;
-  const componentPathFolderPath = dirname(filePath);
-
-  return `${componentPathFolderPath}${innerComponentRelativePath}`;
-};
-
-const getComponentFilePath = async (filePath) => {
-  try {
-    return getPath(filePath);
-  } catch (error) {
-    const errorMessage = `Error: ${error}`;
-    console.log(errorMessage);
-    return errorMessage;
-  }
-}
-
-exports.getComponentFilePath = getComponentFilePath;
-
-// -----------------------------------------------------------------
-
 const Parser = require('@babel/parser');
 const Traverser = require('@babel/traverse');
-const fs = require('fs');
 
-const generateAST = (filePath) => {
-  const fileContent = fs.readFileSync(filePath, 'utf8');
+const generateAST = async (filePath) => {
+  const fileContent = await promises.readFile(filePath, 'utf8');
 
   return Parser.parse(fileContent, {
     sourceType: 'module',
     plugins: ['jsx']
   });
 };
-
-// const filePath = '/home/leandrokinoshita/projects/boring-test/mocks/Component2.js';
-const filePath = '/Users/leandrotk/projects/boring-test/mocks/Component2.js';
-
-const ast = generateAST(filePath);
 
 const addComponentName = (componentsNames) => (path) => {
   const jsx = path.node;
@@ -90,6 +42,42 @@ const getComponentsAndImports = (ast) => {
   };
 };
 
-const { componentsNames, importsPaths } = getComponentsAndImports(ast);
+const getPath = async (filePath) => {
+  const ast = await generateAST(filePath);
+  const { componentsNames, importsPaths } = getComponentsAndImports(ast);
 
-componentsNames.forEach((name) => console.log(name, importsPaths[name]));
+  const components = componentsNames.reduce((acc, name) => {
+    const path = importsPaths[name];
+
+    if (path) {
+      return {
+        ...acc,
+        [name]: path
+      };
+    }
+
+    return acc;
+  }, {});
+
+  return components;
+};
+
+const getComponentFilePath = async (filePath) => {
+  try {
+    return await getPath(filePath);
+  } catch (error) {
+    const errorMessage = `Error: ${error}`;
+    console.log(errorMessage);
+    return errorMessage;
+  }
+}
+
+exports.getComponentFilePath = getComponentFilePath;
+
+// const filePath = '/home/leandrokinoshita/projects/boring-test/mocks/Component2.js';
+const filePath = '/Users/leandrotk/projects/boring-test/mocks/Component2.js';
+getComponentFilePath(filePath).then((res) => {
+  const components = Object.keys(res);
+
+  components.forEach(component => console.log(component, res[component]))
+});
