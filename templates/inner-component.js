@@ -1,17 +1,17 @@
-describe('${InnerComponent}', () => {
-  let innerComponent;
-  let componentProps;
+describe('InnerComponent', () => {
+    let innerComponent;
+    let componentProps;
 
-  beforeAll(() => {
-    innerComponent = renderedComponent.find(${InnerComponent});
-    componentProps = innerComponent.props();
-  });
+    beforeAll(() => {
+      innerComponent = renderedComponent.find(InnerComponent);
+      componentProps = innerComponent.props();
+    });
 
-  it('finds the other component inside the main component', () => {
-    expect(innerComponent).toHaveLength(1);
-  });
+    it('finds the other component inside the main component', () => {
+      expect(innerComponent).toHaveLength(1);
+    });
 
-  it('has the main props', () => {
-    expect(componentProps).toMatchObject(${innerComponentProps});
+    it('has the main props', () => {
+      expect(componentProps).toMatchObject(innerComponentProps);
+    });
   });
-});

@@ -27,14 +27,14 @@ const addInnerComponentsProps = async (content, filePath) => {
     const innerComponentTestContent = await promises.readFile(templatePath, "utf8");
 
     const innerComponentTest = innerComponentTestContent
-      .replace('${InnerComponent}', component)
-      .replace('${innerComponentProps}', JSON.stringify(innerComponentProps, null, 2));
+      .replace(/InnerComponent/g, component)
+      .replace(/innerComponentProps/, JSON.stringify(innerComponentProps, null, 2));
 
     return innerComponentTest;
   }));
 
   return content
-    .replace('${innerComponents}', innerComponentsTests.join('\n\n'));
+    .replace('${innerComponents}', innerComponentsTests.join('\n'));
 };
 
 const isUiTemplate = (template) =>
