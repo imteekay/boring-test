@@ -1,5 +1,5 @@
 import { resolve, join, dirname } from 'path';
-import { getComponentFilePath } from './propTypes/getComponentFilePath';
+import { getComponentsFilePaths } from './propTypes/getComponentsFilePaths';
 import { getComponentPropTypes } from './propTypes/getComponentPropTypes';
 import { buildProps } from './propTypes/buildProps';
 import { promises } from 'fs';
@@ -14,7 +14,7 @@ const componentReplacement = (content, componentName) =>
 const addInnerComponentsProps = async (content, filePath) => {
   const foldersPath = dirname(filePath);
 
-  const componentsPaths = await getComponentFilePath(filePath);
+  const componentsPaths = await getComponentsFilePaths(filePath);
   const components = Object.keys(componentsPaths);
 
   const innerComponentsTests = await Promise.all(components.map(async (component) => {
