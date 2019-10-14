@@ -1,4 +1,3 @@
-const { dirname, resolve } = require('path');
 const { promises } = require('fs');
 const Parser = require('@babel/parser');
 const Traverser = require('@babel/traverse');
@@ -75,9 +74,9 @@ const getComponentFilePath = async (filePath) => {
 exports.getComponentFilePath = getComponentFilePath;
 
 // const filePath = '/home/leandrokinoshita/projects/boring-test/mocks/Component2.js';
-const filePath = '/Users/leandrotk/projects/boring-test/mocks/Component2.js';
-getComponentFilePath(filePath).then((res) => {
-  const components = Object.keys(res);
+// const filePath = '/Users/leandrotk/projects/boring-test/mocks/Component2.js';
+// getComponentFilePath(filePath).then((res) => {
+//   const components = Object.keys(res);
 
-  components.forEach(component => console.log(component, res[component]))
-});
+//   components.forEach(component => console.log(component, res[component]))
+// });
