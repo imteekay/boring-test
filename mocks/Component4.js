@@ -1,6 +1,7 @@
 import React from 'react';
 import PropTypes from 'prop-types';
 import { TestComponent } from './TestComponent';
+import { OtherComponent } from './OtherComponent';
 
 const Component = () => {
   return (
