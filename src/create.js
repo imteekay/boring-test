@@ -2,7 +2,7 @@ import { resolve, join, dirname } from 'path';
 import { getComponentsFilePaths } from './propTypes/getComponentsFilePaths';
 import { getComponentPropTypes } from './propTypes/getComponentPropTypes';
 import { buildProps } from './propTypes/buildProps';
-import { promises } from 'fs';
+import { promises as fs } from 'fs';
 
 const jsExtension = '.js';
 
@@ -24,7 +24,7 @@ const addInnerComponentsProps = async (content, filePath) => {
     const innerComponentProps = buildProps(propsDataStructure);
 
     const templatePath = resolve(__dirname, '../templates/inner-component.js');
-    const innerComponentTestContent = await promises.readFile(templatePath, "utf8");
+    const innerComponentTestContent = await fs.readFile(templatePath, "utf8");
 
     const innerComponentTest = innerComponentTestContent
       .replace(/InnerComponent/g, component)

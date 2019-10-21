@@ -1,11 +1,11 @@
-const { promises } = require('fs');
-const Parser = require('@babel/parser');
-const Traverser = require('@babel/traverse');
+import { parse } from '@babel/parser';
+import traverse from '@babel/traverse';
+import { promises as fs } from 'fs';
 
 const generateAST = async (filePath) => {
-  const fileContent = await promises.readFile(filePath, 'utf8');
+  const fileContent = await fs.readFile(filePath, 'utf8');
 
-  return Parser.parse(fileContent, {
+  return parse(fileContent, {
     sourceType: 'module',
     plugins: ['jsx']
   });
@@ -30,7 +30,7 @@ const getComponentsAndImports = (ast) => {
   const componentsNames = [];
   const importsPaths = {};
 
-  Traverser.default(ast, {
+  traverse(ast, {
     JSXOpeningElement: addComponentName(componentsNames),
     ImportDeclaration: addImportPath(importsPaths)
   });

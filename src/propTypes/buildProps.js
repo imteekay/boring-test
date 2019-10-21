@@ -1,6 +1,6 @@
 import { typeToValue } from './typeValueGenerators';
 
-const buildProps = (props, propTypes = {}, shapeProp) => {
+export const buildProps = (props, propTypes = {}, shapeProp) => {
   if (props.length === 0) {
     return propTypes;
   }
@@ -52,5 +52,3 @@ const buildProps = (props, propTypes = {}, shapeProp) => {
     newPropTypes
   );
 }
-
-exports.buildProps = buildProps;

@@ -1,10 +1,8 @@
-const { promises } = require('fs');
+import { promises as fs } from 'fs';
 
-// Helper functions
 const isEmpty = (list) => list && list.length === 0;
 const getLastItem = (list) => list && list[list.length - 1];
 
-// Cleaning & Getting props
 const clean = (propType) =>
   propType
     .replace(' = {', '')
@@ -69,7 +67,6 @@ const buildNamedPropTypes = (propType) => {
   });
 }
 
-// Reading
 const getContentPropTypes = (fileContent) =>
   fileContent
     .split('propTypes')[1]
@@ -128,9 +125,9 @@ const generateComponentPropTypes = (fileContent) => {
   return generatedPropTypes;
 };
 
-exports.getComponentPropTypes = async (filePath) => {
+export const getComponentPropTypes = async (filePath) => {
   try {
-    const fileContent = await promises.readFile(filePath, 'utf8');
+    const fileContent = await fs.readFile(filePath, 'utf8');
     return generateComponentPropTypes(fileContent);
   } catch (error) {
     const errorMessage = `Error: ${error}`;
