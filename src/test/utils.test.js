@@ -3,7 +3,7 @@ import {
   getFirstElement,
   getSecondElement,
   excludeLast
-} from "../src/utils";
+} from "../utils";
 
 describe("getLastElement", () => {
   describe("with 1 element", () => {

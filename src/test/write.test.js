@@ -1,4 +1,4 @@
-import { getTestPath } from "../src/write";
+import { getTestPath } from "../write";
 
 describe("getTestPath", () => {
   it("returns the right test file path", () => {
