@@ -61,7 +61,7 @@ const getPath = async (filePath) => {
   return components;
 };
 
-const getComponentsFilePaths = async (filePath) => {
+export const getComponentsFilePaths = async (filePath) => {
   try {
     return await getPath(filePath);
   } catch (error) {
@@ -70,5 +70,3 @@ const getComponentsFilePaths = async (filePath) => {
     return errorMessage;
   }
 }
-
-exports.getComponentsFilePaths = getComponentsFilePaths;
