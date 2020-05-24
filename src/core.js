@@ -1,18 +1,13 @@
 import { promises as fs } from "fs";
 import { dirname, resolve } from "path";
 
-import { createNewTest } from './create';
-
 import {
   getTemplateFile,
-  getComponentName
+  getComponentName,
+  componentReplacement
 } from "./read.js";
 
-import {
-  templateCreationCallback,
-  testCreationCallback,
-  getTestPath
-} from "./write.js";
+import { templateCreationCallback, testCreationCallback, getTestPath } from "./write.js";
 
 const generateTemplates = async () => {
   const templatesFiles = resolve(__dirname, '../templates');
@@ -33,21 +28,15 @@ const generateTemplates = async () => {
   });
 };
 
-const generateTest = async (template, filePath) => {
-  const componentName = getComponentName(filePath);
+const generateTest = async (template, file) => {
+  const componentName = getComponentName(file);
   const templateFile = getTemplateFile(template);
 
   const templatePath = resolve(__dirname, `../${templateFile}`);
   const content = await fs.readFile(templatePath, "utf8");
 
-  const newTest = await createNewTest({
-    content,
-    componentName,
-    filePath,
-    template
-  });
-
-  const newTestPath = getTestPath(filePath);
+  const newTest = componentReplacement(content, componentName);
+  const newTestPath = getTestPath(file);
 
   try {
     await fs.mkdir(dirname(newTestPath), { recursive: true });

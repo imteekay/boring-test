@@ -18,7 +18,7 @@ const testCreationCallback = e => {
   console.log("Created! 😎");
 };
 
-const getTestFileName = (fileName) => {
+const getTestFileName = fileName => {
   const fileNameList = fileName.split(".");
   const componentName = getFirstElement(fileNameList);
   const fileExtension = getSecondElement(fileNameList);
@@ -26,8 +26,8 @@ const getTestFileName = (fileName) => {
   return [componentName, TEST, fileExtension].join(".");
 };
 
-const getTestPath = (filePath) => {
-  const fileList = filePath.split("/");
+const getTestPath = file => {
+  const fileList = file.split("/");
   const fileName = getLastElement(fileList);
   const testFileName = getTestFileName(fileName);
   const folders = excludeLast(fileList);

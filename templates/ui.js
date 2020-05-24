@@ -1,7 +1,7 @@
 import React from 'react';
 import { shallow } from 'enzyme';
 
-import { ${componentToBeTested} } from '../${componentToBeTested}';
+import ${componentToBeTested} from '../${componentToBeTested}';
 
 describe('${componentToBeTested}', () => {
   let renderedComponent;
@@ -16,5 +16,25 @@ describe('${componentToBeTested}', () => {
     renderedComponent = render();
   });
 
-  ${innerComponents}
+  describe('UI', () => {
+    describe('renders <AnotherComponent /> with correct props', () => {
+      let anotherComponent;
+      let componentProps;
+
+      beforeAll(() => {
+        anotherComponent = renderedComponent.find(AnotherComponent);
+        componentProps = anotherComponent.props();
+      });
+
+      it('finds the other component inside the main component', () => {
+        expect(anotherComponent).toHaveLength(1);
+      });
+
+      it('has the main props', () => {
+        expect(componentProps).toMatchObject({
+          someProp: defaultProps.someProp,
+        });
+      });
+    });
+  });
 });

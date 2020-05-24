@@ -18,4 +18,7 @@ const getComponentName = file => {
   return componentName;
 };
 
-export { getTemplateFile, getComponentName };
+const componentReplacement = (content, componentName) =>
+  content.split("${componentToBeTested}").join(componentName);
+
+export { getTemplateFile, getComponentName, componentReplacement };
